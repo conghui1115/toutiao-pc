@@ -30,9 +30,9 @@ export default {
   data () {
     return {
       loginForm: {
-        mobile: '',
-        code: '',
-        checked: false
+        mobile: '13911111111',
+        code: '246810',
+        checked: true
       },
       rules: {
         mobile: [
@@ -52,14 +52,25 @@ export default {
             }
           }
         ]
-      },
-      methods: {
-        login () {
-          this.$refs.loginForm.validator().then(() => {
-
-          })
-        }
       }
+
+    }
+  },
+  methods: {
+    login () {
+      this.$refs.loginForm.validate().then(() => {
+        this.$axios({
+          url: '/authorizations',
+          method: 'post',
+          data: this.loginForm
+        }).then(result => {
+          localStorage.setItem('user-token', result.data.data.token)
+          // 跳到主页
+          this.$router.push('/home')
+        }).catch(() => {
+          this.$message.error('用户名或者密码错误')
+        })
+      })
     }
   }
 }
