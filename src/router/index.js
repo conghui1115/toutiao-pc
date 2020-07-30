@@ -2,7 +2,7 @@ import Vue from 'vue'
 // 导入vue-router
 import VueRouter from 'vue-router'
 import Home from '@/views/home'
-
+import Login from '@/views/login'
 Vue.use(VueRouter)
 // 配置路由表
 const routes = [
@@ -10,6 +10,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   }
   // {
   //   path: '/about',
