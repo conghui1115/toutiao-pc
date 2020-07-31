@@ -8,7 +8,6 @@
         <index-header></index-header>
       </el-header>
       <el-main>
-        主题
         <router-view></router-view>
       </el-main>
     </el-container>

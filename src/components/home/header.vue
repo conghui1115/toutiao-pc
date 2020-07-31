@@ -7,17 +7,17 @@
     <!-- 右侧列 -->
     <el-col :span="12">
       <el-row type="flex" justify="end" align="middle">
-        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+        <el-avatar :src="userInfo.photo"></el-avatar>
         <!--下拉菜单 -->
-        <el-dropdown>
+        <el-dropdown  @command="handleCommand">
           <span class="el-dropdown-link">
             小草一枚
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人信息</el-dropdown-item>
-            <el-dropdown-item>git地址</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item command="user">个人信息</el-dropdown-item>
+            <el-dropdown-item command="git">git地址</el-dropdown-item>
+            <el-dropdown-item command="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-row>
@@ -26,7 +26,41 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      userInfo: {}
+    }
+  },
+  methods: {
+    handleCommand (command) {
+      // this.$message('click on item ' + command)
+      // debugger
+      if (command === 'user') {
+        alert('hai')
+      } else if (command === 'git') {
+        window.location.href = 'http://www.baidu.com'
+      } else {
+        // 退出登录
+        // 1.删除本地存的token 2. 跳转到登录页
+        window.localStorage.removeItem('user-token')
+        this.$router.push('/login')
+      }
+    }
+  },
+  created () {
+    const token = localStorage.getItem('user-token')
+    // 获取用户信息
+    this.$axios({
+      url: '/user/profile',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(res => {
+      this.userInfo = res.data
+    })
+  }
+}
 </script>
 
 <style lang='less' scoped>
